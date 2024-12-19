@@ -1,0 +1,59 @@
+{% extends "admin/admin_layout.html" %}
+
+{% block title %}Quản lý sản phẩm{% endblock %}
+
+{% block page_title %}Quản lý sản phẩm{% endblock %}
+
+{% block content %}
+<!-- Nút Thêm mới chỉ hiển thị với admin -->
+{% if session.role == 1 %}
+<div class="mb-3">
+    <a href="{{ url_for('admin_add_product') }}" class="btn btn-primary">Thêm mới</a>
+</div>
+{% endif %}
+
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Hình ảnh</th> <!-- Thêm cột hình ảnh -->
+                        <th>Tên sản phẩm</th>
+                        <th>Giá</th>
+                        <th>Danh mục</th>
+                        <th>Thương hiệu</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                    <tr>
+                        <td>{{ product.product_id }}</td>
+                        <td>
+                            <img src="{{ product.image_url }}" alt="{{ product.product_name }}"
+                                style="max-width: 100px;">
+                        </td>
+                        <td>{{ product.product_name }}</td>
+                        <td>{{ "{:,.0f}".format(product.price) }}đ</td>
+                        <td>{{ product.category_name }}</td>
+                        <td>{{ product.brand_name }}</td>
+                        <td>
+                            <!-- Nút Sửa/Xóa chỉ hiển thị với admin -->
+                            {% if session.role == 1 %}
+                            <a href="{{ url_for('admin_edit_product', id=product.product_id) }}"
+                                class="btn btn-sm btn-warning">Sửa</a>
+                            <a href="{{ url_for('admin_delete_product', id=product.product_id) }}"
+                                class="btn btn-sm btn-danger"
+                                onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này?')">Xóa</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

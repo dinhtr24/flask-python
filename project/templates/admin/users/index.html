@@ -1,0 +1,61 @@
+{% extends "admin/admin_layout.html" %}
+
+{% block title %}Quản lý người dùng{% endblock %}
+
+{% block page_title %}Quản lý người dùng{% endblock %}
+
+{% block content %}
+{% if session.role == 1 %}
+    <div class="mb-3">
+        <a href="{{ url_for('admin_add_user') }}" class="btn btn-primary">Thêm người dùng mới</a>
+    </div>
+{% endif %}
+
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên đăng nhập</th>
+                        <th>Họ tên</th>
+                        <th>Email</th>
+                        <th>Số điện thoại</th>
+                        <th>Vai trò</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.fullname }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.telephone }}</td>
+                        <td>
+                            {% if user.role == 1 %}
+                                <span class="badge bg-danger">Admin</span>
+                            {% else %}
+                                <span class="badge bg-secondary">User</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if session.role == 1 %}
+                                <a href="{{ url_for('admin_edit_user', id=user.id) }}" class="btn btn-sm btn-warning">Sửa</a>
+                                {% if user.id != session.user_id %}
+                                    <a href="{{ url_for('admin_delete_user', id=user.id) }}" 
+                                       class="btn btn-sm btn-danger"
+                                       onclick="return confirm('Bạn có chắc muốn xóa user này?')">Xóa</a>
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

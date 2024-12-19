@@ -1,0 +1,45 @@
+{% extends "admin/admin_layout.html" %}
+
+{% block title %}Quản lý thương hiệu{% endblock %}
+
+{% block page_title %}Quản lý thương hiệu{% endblock %}
+
+{% block content %}
+{% if session.role == 1 %}
+    <div class="mb-3">
+        <a href="{{ url_for('admin_add_brand') }}" class="btn btn-primary">Thêm thương hiệu mới</a>
+    </div>
+{% endif %}
+
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên thương hiệu</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for brand in brands %}
+                    <tr>
+                        <td>{{ brand.brand_id }}</td>
+                        <td>{{ brand.brand_name }}</td>
+                        <td>
+                            {% if session.role == 1 %}
+                                <a href="{{ url_for('admin_edit_brand', id=brand.brand_id) }}" class="btn btn-sm btn-warning">Sửa</a>
+                                <a href="{{ url_for('admin_delete_brand', id=brand.brand_id) }}" 
+                                   class="btn btn-sm btn-danger"
+                                   onclick="return confirm('Bạn có chắc muốn xóa thương hiệu này?')">Xóa</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

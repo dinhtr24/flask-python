@@ -1,0 +1,27 @@
+{% extends "admin/admin_layout.html" %}
+
+{% block title %}Sửa thương hiệu{% endblock %}
+
+{% block page_title %}Sửa thương hiệu{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <div class="card">
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label class="form-label">Tên thương hiệu</label>
+                        <input type="text" class="form-control" name="brand_name" 
+                               value="{{ brand.brand_name }}" required>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Cập nhật</button>
+                        <a href="{{ url_for('admin_brands') }}" class="btn btn-secondary">Hủy</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

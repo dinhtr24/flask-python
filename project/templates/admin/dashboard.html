@@ -1,0 +1,107 @@
+{% extends "admin/admin_layout.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Thống kê Users -->
+    <div class="col-md-3 mb-4">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <h5 class="card-title">Tổng người dùng</h5>
+                <h2 class="card-text">{{ total_users }}</h2>
+                <a href="{{ url_for('admin_users') }}" class="text-white">Xem chi tiết →</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Thống kê Products -->
+    <div class="col-md-3 mb-4">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <h5 class="card-title">Tổng sản phẩm</h5>
+                <h2 class="card-text">{{ total_products }}</h2>
+                <a href="{{ url_for('admin_products') }}" class="text-white">Xem chi tiết →</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Thống kê Orders -->
+    <div class="col-md-3 mb-4">
+        <div class="card text-white bg-warning">
+            <div class="card-body">
+                <h5 class="card-title">Tổng đơn hàng</h5>
+                <h2 class="card-text">{{ total_orders }}</h2>
+                <a href="{{ url_for('admin_orders') }}" class="text-white">Xem chi tiết →</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Đơn hàng đang xử lý -->
+    <div class="col-md-3 mb-4">
+        <div class="card text-white bg-info">
+            <div class="card-body">
+                <h5 class="card-title">Đơn hàng mới</h5>
+                <h2 class="card-text">{{ pending_orders }}</h2>
+                <a href="{{ url_for('admin_orders') }}" class="text-white">Xem chi tiết →</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Đơn hàng gần đây -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5>Đơn hàng gần đây</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Khách hàng</th>
+                                <th>Tổng tiền</th>
+                                <th>Trạng thái</th>
+                                <th>Ngày đặt</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in recent_orders %}
+                            <tr>
+                                <td>#{{ order.order_id }}</td>
+                                <td>{{ order.fullname }}</td>
+                                <td>{{ "{:,.0f}".format(order.total_price) }}đ</td>
+                                <td>
+                                    {% if order.status == 0 %}
+                                        <span class="badge bg-warning">Đang xử lý</span>
+                                    {% elif order.status == 1 %}
+                                        <span class="badge bg-info">Đang giao</span>
+                                    {% elif order.status == 2 %}
+                                        <span class="badge bg-success">Đã giao</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">Đã hủy</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ order.order_date.strftime('%d/%m/%Y') }}</td>
+                                <td>
+                                    <a href="{{ url_for('admin_order_detail', id=order.order_id) }}" 
+                                       class="btn btn-sm btn-primary">
+                                        Chi tiết
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

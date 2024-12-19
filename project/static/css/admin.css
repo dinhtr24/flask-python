@@ -1,0 +1,66 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navbar */
+.navbar {
+    margin-bottom: 20px;
+}
+
+.navbar-brand {
+    font-weight: bold;
+}
+
+/* Content */
+.container {
+    flex: 1;  /* Container sẽ tự động mở rộng để đẩy footer xuống dưới */
+    padding-bottom: 20px;  /* Tạo khoảng cách với footer */
+}
+
+/* Table */
+.table th {
+    background-color: #f8f9fa;
+}
+
+/* Card */
+.card {
+    margin-bottom: 20px;
+    background-color: #fff;
+}
+
+/* Form */
+.form-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+/* Badge */
+.badge {
+    padding: 6px 10px;
+}
+
+.badge-pending { background-color: #ffc107; }
+.badge-shipping { background-color: #17a2b8; }
+.badge-completed { background-color: #28a745; }
+.badge-cancelled { background-color: #dc3545; }
+
+/* Alert */
+.alert {
+    margin-bottom: 20px;
+}
+
+/* Footer */
+footer {
+    padding: 15px 0;
+    background-color: #343a40;
+    color: white;
+    text-align: center;
+}

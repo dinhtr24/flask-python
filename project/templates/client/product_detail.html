@@ -1,0 +1,65 @@
+{% extends "client/client_layout.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="product-detail-container">
+        <div class="product-image">
+            <img src="{{ product.image_url }}" alt="{{ product.product_name }}" class="img-fluid">
+        </div>
+        <div class="product-info">
+            <h2 class="product-title">{{ product.product_name }}</h2>
+            <div class="product-details">
+                <p class="product-price"><strong>Giá:</strong> {{ "{:,.0f}".format(product.price) }}đ</p>
+                <p class="product-category"><strong>Danh mục:</strong> {{ product.category_name }}</p>
+                <p class="product-brand"><strong>Thương hiệu:</strong> {{ product.brand_name }}</p>
+                <div class="product-description">
+                    <h4 class="description-heading">Mô tả:</h4>
+                    <p>{{ product.description }}</p>
+                </div>
+            </div>
+            <button class="btn btn-primary add-to-cart-btn" data-product-id="{{ product.product_id }}"
+                data-product-name="{{ product.product_name }}" data-product-price="{{ product.price }}"
+                data-product-image="{{ product.image_url }}">
+                <i class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const addToCartButton = document.querySelector('.add-to-cart-btn');
+
+        addToCartButton.addEventListener('click', function (event) {
+            const product = event.target.closest('.add-to-cart-btn').dataset;
+
+            // Lấy giỏ hàng hiện tại từ local storage
+            let cart = localStorage.getItem('cart');
+            cart = cart ? JSON.parse(cart) : [];
+
+            // Kiểm tra sản phẩm đã có trong giỏ hàng chưa
+            const existingItemIndex = cart.findIndex(item => item.product_id === product.productId);
+
+            if (existingItemIndex > -1) {
+                cart[existingItemIndex].quantity += 1;
+            } else {
+                // Nếu chưa có, thêm mới
+                const newItem = {
+                    product_id: product.productId,
+                    product_name: product.productName,
+                    price: parseFloat(product.productPrice),
+                    quantity: 1,
+                    image_url: product.productImage
+                };
+                cart.push(newItem);
+            }
+
+
+            // Lưu giỏ hàng vào local storage
+            localStorage.setItem('cart', JSON.stringify(cart));
+
+            alert('Đã thêm sản phẩm vào giỏ hàng!');
+        });
+    });
+</script>
+{% endblock %}
